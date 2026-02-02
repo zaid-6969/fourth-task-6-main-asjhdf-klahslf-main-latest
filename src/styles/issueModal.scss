@@ -1,0 +1,339 @@
+/* ===============================
+   OVERLAY
+================================ */
+.issue-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 4, 7, 0.75);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 48px;
+}
+
+/* ===============================
+   MODAL CONTAINER
+================================ */
+.issue-container {
+  width: 85%;
+  height: 80vh;
+  background: #1d2125;
+  color: #c7d1db;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* ===============================
+   HEADER (FIXED)
+================================ */
+.issue-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #1d2125;
+  padding: 16px 20px;
+  border-bottom: 1px solid #2b3137;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+}
+
+.issue-close {
+  background: transparent;
+  border: none;
+  color: #9fadbc;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+}
+
+/* ===============================
+   BODY
+================================ */
+.issue-body {
+  display: flex;
+  gap: 24px;
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* ===============================
+   LEFT SIDEBAR (META)
+================================ */
+.issue-sidebar {
+  width: 35%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.issue-meta {
+  margin-bottom: 18px;
+
+  label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #9fadbc;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  select {
+    width: 30%;
+    padding: 6px 8px;
+    background: #22272b;
+    border: 1px solid #3d444d;
+    border-radius: 4px;
+    color: #dee4ea;
+    font-size: 14px;
+
+    &:focus {
+      outline: none;
+      border-color: #579dff;
+      box-shadow: 0 0 0 1px #579dff;
+    }
+  }
+}
+
+.issue-meta-value {
+  font-size: 14px;
+  color: #dee4ea;
+}
+
+/* ===============================
+   RIGHT CONTENT
+================================ */
+.issue-content {
+  flex: 1;
+}
+
+.issue-group {
+  padding: 10px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 22px;
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #9fadbc;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+}
+
+/* ===============================
+   QUILL (DARK)
+================================ */
+.issue-editor {
+  background: #22272b;
+  border: 1px solid #3d444d;
+  border-radius: 4px;
+}
+
+.issue-editor .ql-toolbar {
+  background: #2c333a;
+  border: none;
+  border-bottom: 1px solid #3d444d;
+}
+
+.issue-editor .ql-container {
+  background: #22272b;
+  color: #dee4ea;
+  min-height: 120px;
+  font-size: 14px;
+}
+
+.issue-editor .ql-editor {
+  color: #dee4ea;
+}
+
+.issue-editor .ql-editor.ql-blank::before {
+  color: #9fadbc;
+}
+
+/* ===============================
+   FOOTER (FIXED)
+================================ */
+.issue-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background: #1d2125;
+  padding: 16px 20px;
+  border-top: 1px solid #2b3137;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.issue-cancel {
+  background: transparent;
+  border: none;
+  color: #9fadbc;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+}
+
+.issue-save {
+  background: #579dff;
+  color: #0c0f14;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: #85b8ff;
+  }
+}
+
+/* ===============================
+   DETAILS DROPDOWN
+================================ */
+.issue-details {
+  display: flex;
+  flex-direction: column;
+  max-height: 45vh;
+  border: 1px solid #3d444d;
+  border-radius: 5px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 10px;
+}
+
+.issue-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: #9fadbc;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+
+  &:hover {
+    color: #ffffff;
+  }
+
+  .arrow {
+    transition: transform 0.2s ease;
+    font-size: 14px;
+  }
+
+  .arrow.open {
+    transform: rotate(90deg);
+  }
+}
+
+.issue-details-body {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 85%;
+  padding: 20px;
+}
+
+.issue-meta-value {
+  font-size: 14px;
+  color: #dee4ea;
+}
+
+.issue-details-header {
+  margin: 1px;
+  font-size: 18px;
+}
+
+.issue-details {
+  border: 1px solid #3d444d;
+  border-radius: 5px;
+}
+
+.issue-meta {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* READ MODE */
+.issue-view {
+  padding: 6px 2px;
+  font-size: 14px;
+  color: #dee4ea;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.issue-view .muted {
+  color: #9fadbc;
+  font-style: italic;
+}
+
+.inline-actions {
+  display: flex;
+  gap: 8px;
+   margin: 10px 0px;
+}
+
+.inline-save {
+  background: #579dff;
+  color: #0c0f14;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: #85b8ff;
+  }
+}
+
+.inline-cancel {
+  background: transparent;
+  border: none;
+  color: #9fadbc;
+  cursor: pointer;
+  font-size: 13px;
+
+  &:hover {
+    color: #ffffff;
+  }
+}

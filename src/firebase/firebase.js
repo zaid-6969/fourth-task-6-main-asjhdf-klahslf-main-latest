@@ -1,0 +1,23 @@
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD0dz85WHuo-nYvbuXlVatNi1kP7f32ZfI",
+  authDomain: "auth-e9cf8.firebaseapp.com",
+  projectId: "auth-e9cf8",
+  storageBucket: "auth-e9cf8.firebasestorage.app",
+  messagingSenderId: "1076805857812",
+  appId: "1:1076805857812:web:62c9260df5a7de34c56d01",
+  measurementId: "G-WELXRM43MB",
+};
+
+const app = initializeApp(firebaseConfig);
+
+const analytics = getAnalytics(app);
+
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+
+export const googleProvider = new GoogleAuthProvider();

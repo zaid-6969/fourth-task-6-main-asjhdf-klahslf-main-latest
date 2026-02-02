@@ -1,0 +1,369 @@
+@import "_colors";
+
+.kanban-board {
+  display: flex;
+  gap: 10px;
+  width: 80vw;
+  min-height: 75vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+   scroll-behavior: smooth;
+  scroll-snap-type: x proximity; 
+  -webkit-overflow-scrolling: touch;
+
+  padding-bottom: 8px;
+}
+
+.landing {
+  width: 97%;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.kanban-board::-webkit-scrollbar {
+  height: 10px;
+}
+
+.kanban-board::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+
+.kanban-board::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.column {
+  min-width: 300px;
+  max-width: 300px;
+  flex-shrink: 0;
+  background: #18191a;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid var(--border);
+}
+
+.column h3 {
+  margin: 0;
+  padding: 12px;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.column-scroll {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  overflow-y: auto; 
+  scroll-behavior: smooth; 
+  div{
+    margin: 0px;
+    
+  }
+}
+
+.column-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.column-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+.column-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.kanban-card {
+  position: relative;
+  background: var(--surface);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 0px 5px;
+  padding: 12px 14px;
+  border-radius: 5px;
+  font-size: 14px;
+  line-height: 1.4;
+  cursor: grab;
+  user-select: none;
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px var(--border);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.kanban-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.kanban-card:active {
+  cursor: grabbing;
+  transform: scale(0.98);
+}
+
+.card-content {
+  font-size: 15px;
+  color: var(--text);
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.card-user {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.delete-card,
+.delete-column {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 6px;
+  opacity: 0;
+  transform: scale(0.9);
+
+  transition:
+    opacity 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.delete-card {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+}
+
+.column-header:hover .delete-column,
+.kanban-card:hover .delete-card {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.delete-card:hover,
+.delete-column:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.delete-card:active,
+.delete-column:active {
+  transform: scale(0.95);
+}
+
+.add-card-btn {
+  width: 100%;
+  margin-top: 6px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.add-card-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+.add-card-wrapper {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.column:hover .add-card-wrapper {
+  opacity: 1;
+}
+
+.add-column {
+  min-width: 50px;
+}
+
+.add-column-column{
+  padding: 5px;
+  font-size: 20px;
+  background-color: var(--bg);
+  border: none;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.add-column-btn {
+  width: 100%;
+  height: 42px;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  border-radius: 10px;
+
+  color: var(--muted);
+  font-size: 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+
+  cursor: pointer;
+}
+
+.add-column-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text);
+}
+
+.add-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  background: var(--surface);
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.add-card textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: var(--text);
+  font-size: 13px;
+  resize: none;
+  min-height: 60px;
+  outline: none;
+}
+
+.add-card textarea::placeholder {
+  color: var(--muted);
+}
+
+.add-card textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px rgba(102, 157, 241, 0.35);
+}
+
+.add-card button {
+  align-self: flex-end;
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.add-card button:hover {
+  opacity: 0.9;
+}
+
+.cancel-add {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.cancel-add:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+
+.create-card {
+  background-color: #18191a;
+  width: 100%;
+  border: 0px;
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  color: white;
+  opacity: 0;
+  transition: ease-out;
+  gap: 5px;
+}
+
+.column:hover .create-card {
+  opacity: 1;
+}
+
+.empty-drop-zone {
+  border: 2px dashed var(--border);
+  border-radius: 6px;
+  padding: 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.empty-drop-zone:hover {
+  background: rgba(102, 157, 241, 0.08);
+  border-color: var(--primary);
+}
+
+.end-drop-zone {
+  height: 20px;
+}
+
+
+
+.card-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: 40%;
+  font-size: 15px;
+  font-weight: 500;
+  color: #9fadbc;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  border: 1px solid #9fadbc;
+}
