@@ -13,12 +13,15 @@ const KanbanCard = ({
   updateIssue,
   projectName,
   columns,
+  moveCard, // ✅ ADD THIS
 }) => {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(item.content);
   const [showModal, setShowModal] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
+
+  const [showMoveMenu, setShowMoveMenu] = useState(false);
 
   /* CLOSE MENU ON OUTSIDE CLICK */
   useEffect(() => {
@@ -92,6 +95,7 @@ const KanbanCard = ({
 
         {menuOpen && (
           <div className="card-menu" ref={menuRef}>
+            {/* RENAME */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -102,6 +106,47 @@ const KanbanCard = ({
               <FaPencilAlt /> Rename
             </button>
 
+            {/* CHANGE STATUS */}
+            <div className="card-submenu">
+              <button
+                className="submenu-trigger"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowMoveMenu((p) => !p);
+                }}
+              >
+                Change status →
+              </button>
+
+              {showMoveMenu && (
+                <div className="submenu-list">
+                  {Array.isArray(columns) &&
+                    columns.map((col) => {
+                      const isCurrent = col.id === item.columnId;
+
+                      return (
+                        <button
+                          key={col.id}
+                          className={isCurrent ? "active-status" : ""}
+                          disabled={isCurrent}
+                          onClick={(e) => {
+                            e.stopPropagation();
+
+                            moveCard(item.columnId, col.id, item, index, 0);
+
+                            setMenuOpen(false);
+                            setShowMoveMenu(false);
+                          }}
+                        >
+                          {col.title}
+                        </button>
+                      );
+                    })}
+                </div>
+              )}
+            </div>
+
+            {/* DELETE */}
             <button
               className="danger"
               onClick={(e) => {

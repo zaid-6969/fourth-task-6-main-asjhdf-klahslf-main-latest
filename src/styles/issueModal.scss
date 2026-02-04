@@ -33,7 +33,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  background: #1d2125;
+  background: var(--bg);
   padding: 16px 20px;
   border-bottom: 1px solid #2b3137;
   display: flex;
@@ -70,6 +70,7 @@
   padding: 20px;
   overflow-y: auto;
   flex: 1;
+  background-color: var(--bg);
 }
 
 /* ===============================
@@ -180,7 +181,7 @@
   position: sticky;
   bottom: 0;
   z-index: 10;
-  background: #1d2125;
+  background: var(--bg);
   padding: 16px 20px;
   border-top: 1px solid #2b3137;
   display: flex;
@@ -336,4 +337,221 @@
   &:hover {
     color: #ffffff;
   }
+}
+
+.issue-content{
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* =========================
+   JIRA COMMENTS WRAPPER
+========================= */
+
+.jira-comments {
+  margin-top: 24px;
+
+  h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+}
+
+/* =========================
+   COMMENT LIST
+========================= */
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+/* =========================
+   SINGLE COMMENT
+========================= */
+
+.comment-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Avatar (Jira-style circle) */
+.comment-avatar {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Comment bubble */
+.comment-body {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+/* Username */
+.comment-user {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+/* =========================
+   COMMENT CONTENT (QUILL)
+========================= */
+
+/* Force override global resets */
+.comment-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+/* Paragraphs */
+.comment-text p {
+  margin: 0 0 8px 0 !important;
+  font-weight: 400 !important;
+}
+
+.comment-text p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Bold / Italic / Underline */
+.comment-text strong {
+  font-weight: 600 !important;
+}
+
+.comment-text em {
+  font-style: italic !important;
+}
+
+.comment-text u {
+  text-decoration: underline;
+}
+
+/* Lists */
+.comment-text ul,
+.comment-text ol {
+  padding-left: 20px !important;
+  margin: 6px 0 8px;
+}
+
+.comment-text li {
+  margin-bottom: 4px;
+  font-weight: 400 !important;
+}
+
+/* Links */
+.comment-text a {
+  color: var(--primary) !important;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.comment-text a:hover {
+  text-decoration: underline;
+}
+
+/* Blockquote (Jira style) */
+.comment-text blockquote {
+  border-left: 3px solid var(--border);
+  padding-left: 12px;
+  margin: 8px 0;
+  color: var(--muted);
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+}
+
+/* Inline code */
+.comment-text code {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 13px;
+  font-family: monospace;
+}
+
+/* Images (future-proof) */
+.comment-text img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+/* =========================
+   COMMENT EDITOR (ADD)
+========================= */
+
+.comment-editor {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+/* Quill toolbar */
+.comment-editor .ql-toolbar {
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+/* Quill container */
+.comment-editor .ql-container {
+  border: none;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.comment-editor .ql-editor {
+  min-height: 80px;
+  color: var(--text);
+}
+
+.comment-editor .ql-editor.ql-blank::before {
+  color: var(--muted);
+}
+
+/* =========================
+   ACTION BUTTON
+========================= */
+
+.comment-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.comment-actions button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.comment-actions button:hover {
+  opacity: 0.9;
 }

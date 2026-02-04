@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 const Tabination = ({ tabs, defaultActiveTab }) => {
   const [activeTab, setActiveTab] = useState(defaultActiveTab || tabs[0]?.id);
 
-  /* 🔥 Sync when defaultActiveTab changes */
   useEffect(() => {
     if (defaultActiveTab) {
       setActiveTab(defaultActiveTab);

@@ -163,8 +163,9 @@ const Column = ({
               sourceCol={column.id}
               index={i}
               projectName={projectName}
-              columns={columns}
+              columns={columns} // ✅ correct
               updateIssue={updateIssue}
+              moveCard={moveCard}
             />
           </div>
         ))}

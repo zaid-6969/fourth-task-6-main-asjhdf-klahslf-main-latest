@@ -2,12 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import Column from "./Column";
 import "../styles/kanbaborad.scss";
 import { FiPlus } from "react-icons/fi";
-
 import { useDispatch, useSelector } from "react-redux";
 import { setColumns } from "../store/kanbanSlice";
 
 import {
   doc,
+  serverTimestamp,
   onSnapshot,
   setDoc,
   getDoc,
@@ -115,10 +115,23 @@ const Kanban = ({ projectId, projectName }) => {
                   },
                 ],
               }
-            : col
-        )
-      )
+            : col,
+        ),
+      ),
     );
+  };
+
+  const logMoveActivity = async (issueId, from, to) => {
+    if (!user) return;
+
+    await addDoc(collection(db, "tickets", issueId, "activity"), {
+      type: "MOVE",
+      from,
+      to,
+      userId: user.uid,
+      userName: user.displayName || user.email,
+      createdAt: serverTimestamp(),
+    });
   };
 
   /* MOVE CARD */
@@ -129,7 +142,10 @@ const Kanban = ({ projectId, projectName }) => {
     const target = updated.find((c) => c.id === toCol);
     if (!source || !target) return;
 
+    // REMOVE
     source.items.splice(fromIndex, 1);
+
+    // ADD
     target.items.splice(toIndex, 0, {
       ...card,
       columnId: target.id,
@@ -137,6 +153,11 @@ const Kanban = ({ projectId, projectName }) => {
     });
 
     dispatch(setColumns(updated));
+
+    // ✅ LOG ACTIVITY
+    if (source.title !== target.title) {
+      logMoveActivity(card.id, source.title, target.title);
+    }
   };
 
   /* MOVE COLUMN */
@@ -152,9 +173,9 @@ const Kanban = ({ projectId, projectName }) => {
     dispatch(
       setColumns(
         columns.map((col) =>
-          col.id === columnId ? { ...col, title: newTitle } : col
-        )
-      )
+          col.id === columnId ? { ...col, title: newTitle } : col,
+        ),
+      ),
     );
   };
 
@@ -169,7 +190,7 @@ const Kanban = ({ projectId, projectName }) => {
 
     if (updatedItem.delete) {
       updated.forEach(
-        (col) => (col.items = col.items.filter((c) => c.id !== updatedItem.id))
+        (col) => (col.items = col.items.filter((c) => c.id !== updatedItem.id)),
       );
       dispatch(setColumns(updated));
       return;
@@ -216,7 +237,6 @@ const Kanban = ({ projectId, projectName }) => {
           projectName={projectName}
           columns={columns}
           updateIssue={updateIssue}
-
           /* 🔥 REQUIRED FOR RENAME / DELETE */
           renameColumn={renameColumn}
           deleteColumn={deleteColumn}
@@ -238,8 +258,12 @@ const Kanban = ({ projectId, projectName }) => {
                 dispatch(
                   setColumns([
                     ...columns,
-                    { id: Date.now().toString(), title: columnTitle, items: [] },
-                  ])
+                    {
+                      id: Date.now().toString(),
+                      title: columnTitle,
+                      items: [],
+                    },
+                  ]),
                 );
                 setColumnTitle("");
                 setShowColumnInput(false);

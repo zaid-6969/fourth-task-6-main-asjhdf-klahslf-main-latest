@@ -2,14 +2,15 @@
 
 .drop-down-option {
   width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 .aside-list-items-first {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-
-
 
 .user-dropdown-trigger {
   width: 150px;
@@ -54,7 +55,7 @@
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 15px;
   cursor: pointer;
   user-select: none;
   transition:
@@ -67,7 +68,6 @@
   box-shadow: 0 0 0 2px rgba(87, 157, 255, 0.4);
 }
 
-
-.date{
+.date {
   width: 130px;
 }

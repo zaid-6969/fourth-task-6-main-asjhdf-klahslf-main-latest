@@ -19,6 +19,8 @@ import Logout from "../auth/Logout";
 import { auth } from "../firebase/firebase";
 import UserAvatar from "./UserAvatar";
 
+import { FaUser } from "react-icons/fa";
+
 const Navbar = () => {
   const dispatch = useDispatch();
 
@@ -97,7 +99,7 @@ const Navbar = () => {
           </li>
 
           {/* THEME + LOGOUT */}
-          {/* <div className="theme-wrapper" ref={dropdownRef}>
+          <selection ref={dropdownRef}>
             <button
               className="profile-theme"
               onClick={() => setOpen((p) => !p)}
@@ -118,18 +120,18 @@ const Navbar = () => {
                   className={style["drop-down-option"]}
                   onClick={handleLogout}
                 >
-                  Logout
+                 <FaUser/>  Logout
                 </div>
 
-                <div
+                <nav
                   className={style["drop-down-option"]}
                   onClick={() => dispatch(toggleTheme())}
                 >
                   {theme === "dark" ? <CiSun /> : <FaMoon />} Toggle theme
-                </div>
+                </nav>
               </section>
             )}
-          </div> */}
+          </selection>
         </ul>
       </div>
 

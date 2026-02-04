@@ -3,6 +3,9 @@ import { ImCross } from "react-icons/im";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import "../styles/issueModal.scss";
+import IssueComments from "./IssueComments";
+import ActivityTabs from "./ActivityTabs";
+import IssueActivity from "./IssueActivity";
 
 const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
   const summaryRef = useRef(null);
@@ -38,7 +41,7 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
       });
       descriptionQuill.current.root.innerHTML = descriptionHTML;
     }
-  }, [editSummary, editDescription]);
+  }, [editSummary, editDescription, summaryHTML, descriptionHTML]);
 
   /* SAVE SUMMARY ONLY */
   const saveSummary = () => {
@@ -70,7 +73,7 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
     descriptionQuill.current = null;
   };
 
-  /* MAIN SAVE (FALLBACK) */
+  /* MAIN SAVE */
   const handleSave = () => {
     onUpdate({
       ...item,
@@ -80,6 +83,9 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
     });
     onClose();
   };
+
+  const [activeActivityTab, setActiveActivityTab] = useState("Comments");
+  const [activityOpen, setActivityOpen] = useState(true);
 
   return (
     <div className="issue-overlay">
@@ -102,9 +108,9 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
 
               {!editSummary ? (
                 <div
-                className="issue-view"
-                style={{ fontSize: "15px", fontWeight: "100" }}
-                dangerouslySetInnerHTML={{
+                  className="issue-view"
+                  style={{ fontSize: "15px", fontWeight: "100" }}
+                  dangerouslySetInnerHTML={{
                     __html:
                       summaryHTML ||
                       "<span class='muted'>Click to add summary</span>",
@@ -135,8 +141,8 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
 
               {!editDescription ? (
                 <div
-                  style={{ fontSize: "15px", fontWeight: "100" }}
                   className="issue-view"
+                  style={{ fontSize: "15px", fontWeight: "100" }}
                   dangerouslySetInnerHTML={{
                     __html:
                       descriptionHTML ||
@@ -161,6 +167,31 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
                 </>
               )}
             </div>
+
+            {/* ✅ COMMENT SECTION (FIXED) */}
+
+            <ActivityTabs
+              activeTab={activeActivityTab}
+              onTabChange={setActiveActivityTab}
+              onToggle={setActivityOpen}
+            />
+
+            {activityOpen && (
+              <>
+                {activeActivityTab === "Comments" && (
+                  <IssueComments issueId={item.id} />
+                )}
+                {activeActivityTab === "History" && (
+                  <IssueActivity issueId={item.id} />
+                )}
+
+                {activeActivityTab === "Work log" && (
+                  <div className="activity-placeholder">
+                    Work log coming soon
+                  </div>
+                )}
+              </>
+            )}
           </div>
 
           {/* RIGHT SIDEBAR */}
@@ -220,21 +251,6 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
                   <div className="issue-meta">
                     <label>Project</label>
                     <div className="issue-meta-value">{projectName}</div>
-                  </div>
-
-                  <div className="issue-meta">
-                    <label>Labels</label>
-                    <p>none</p>
-                  </div>
-
-                  <div className="issue-meta">
-                    <label>Teams</label>
-                    <p>none</p>
-                  </div>
-
-                  <div className="issue-meta">
-                    <label>Start date</label>
-                    <p>none</p>
                   </div>
 
                   <div className="issue-meta">
