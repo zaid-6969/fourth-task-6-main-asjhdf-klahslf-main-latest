@@ -142,6 +142,20 @@ button {
   margin-bottom: 15px;
 }
 
+.card-hr{
+  height: 1px;
+  width: 130%;
+  background: var(--border);
+  // opacity: 0.4;
+  margin-left: -27px;  
+}
+
+.footer{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .main-container {
   display: flex;
   width: 100%;
@@ -564,6 +578,7 @@ button.danger {
   display: flex;
   align-items: center;
   transition: transform 0.25s ease;
+  font-size: 15px;
 }
 
 .space-toggle.open .arrow {
@@ -1229,12 +1244,12 @@ button.danger {
   flex: 1;
   height: 36px;
 
-  background: #161a1d;
+  background: var(--column);
   border: 1px solid #3b4048;
   border-radius: 6px;
 
   padding: 0 10px;
-  color: #e6edf3;
+  color: var(--text);
   font-size: 14px;
 
   outline: none;
@@ -1471,7 +1486,6 @@ button.danger {
   }
 }
 
-/* Inline submenu (Jira-style safe) */
 .submenu-list {
   margin-top: 6px;
   display: flex;
@@ -1518,5 +1532,241 @@ button.danger {
 
 .activity-move {
   margin-left: 8px;
+  color: var(--muted);
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment-menu {
+  position: relative;
+  cursor: pointer;
+
+  svg {
+    opacity: 0.6;
+  }
+
+  &:hover svg {
+    opacity: 1;
+  }
+
+  &:hover .comment-menu-dropdown {
+    display: block;
+  }
+}
+
+.comment-menu-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  min-width: 120px;
+  z-index: 10;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+
+  button {
+    width: 100%;
+    padding: 8px 12px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    color: var(--text);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    &.danger {
+      color: #e5533d;
+    }
+  }
+}
+
+
+/* =========================
+   ISSUE ACTIVITY (JIRA STYLE)
+========================= */
+
+.issue-activity {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* One activity row */
+.activity-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text);
+  padding-left: 14px;
+  position: relative;
+}
+
+/* Timeline dot */
+.activity-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 6px;
+  height: 6px;
+  background: #2684ff; /* Jira blue */
+  border-radius: 50%;
+}
+
+/* User name */
+.activity-item strong {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* "moved this issue" text */
+.activity-item {
+  line-height: 1.4;
+}
+
+/* Move info box */
+.activity-move {
+  margin-top: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* From / To pill */
+.activity-move span {
+  background: rgba(9, 30, 66, 0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Dark mode tweak */
+[data-theme="dark"] .activity-move span {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Optional hover polish (Jira feel) */
+.activity-item:hover {
+  background: rgba(9, 30, 66, 0.03);
+  border-radius: 6px;
+  padding: 6px 6px 6px 14px;
+}
+
+
+.activity-all {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ROW */
+.activity-row {
+  display: flex;
+  gap: 12px;
+}
+
+/* DOT (timeline) */
+.activity-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  background: var(--muted);
+}
+
+/* CONTENT BOX */
+.activity-content {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+/* HEADER */
+.activity-header {
+  font-size: 13px;
+  color: var(--text);
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.activity-action {
+  color: var(--muted);
+}
+
+/* COMMENT BODY */
+.activity-comment {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.5;
+
+  p {
+    margin: 0;
+  }
+}
+
+/* MOVE HISTORY */
+.activity-move {
+  font-size: 13px;
+  color: var(--muted);
+
+  span {
+    color: var(--text);
+    font-weight: 500;
+  }
+}
+
+
+/* MOVE ACTIVITY */
+.activity-move {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* FROM / TO */
+.activity-from,
+.activity-to {
+  font-weight: 500;
+  color: var(--text);
+  background: var(--count-col);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+/* ARROW */
+.activity-arrow {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* HEADER FIX */
+.activity-header {
+  display: flex;
+  gap: 6px;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.activity-action {
   color: var(--muted);
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const TABS = ["All", "Comments", "History", "Work log"];
+const TABS = ["All", "Comments", "History"];
 
 const ActivityTabs = ({ activeTab, onTabChange, onToggle }) => {
   const [open, setOpen] = useState(true);

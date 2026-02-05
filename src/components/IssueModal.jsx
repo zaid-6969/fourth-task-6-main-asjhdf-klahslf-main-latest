@@ -6,6 +6,7 @@ import "../styles/issueModal.scss";
 import IssueComments from "./IssueComments";
 import ActivityTabs from "./ActivityTabs";
 import IssueActivity from "./IssueActivity";
+import IssueAllActivity from "./IssueAllActivity";
 
 const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
   const summaryRef = useRef(null);
@@ -178,6 +179,9 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
 
             {activityOpen && (
               <>
+                {activeActivityTab === "All" && (
+                  <IssueAllActivity issueId={item.id} />
+                )}
                 {activeActivityTab === "Comments" && (
                   <IssueComments issueId={item.id} />
                 )}

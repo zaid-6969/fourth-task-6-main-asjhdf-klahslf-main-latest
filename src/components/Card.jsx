@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/User.scss";
+import { IoIosArrowDown } from "react-icons/io";
 
 const SupportCard = ({
   children,
@@ -49,11 +50,11 @@ const SupportCard = ({
               <span className="count">0</span>
             </div>
 
-            <div className="hr"></div>
+            <div className="card-hr"></div>
 
             <div className="footer" style={{ fontSize: "12px" }}>
               <span>3 queues</span>
-              <span className="arrow">⌄</span>
+              <span className="arrow"><IoIosArrowDown/> </span>
             </div>
           </div>
         </div>
