@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Column from "./Column";
 import "../styles/kanbaborad.scss";
 import { FiPlus } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
-import { setColumns } from "../store/kanbanSlice";
 
 import {
   doc,
@@ -14,6 +12,9 @@ import {
   addDoc,
   collection,
 } from "firebase/firestore";
+
+import { useDispatch, useSelector } from "react-redux";
+import { setColumns } from "../store/kanbanSlice";
 
 import { db } from "../firebase/firebase";
 import { useAuth } from "../auth/AuthProvider";
@@ -115,17 +116,18 @@ const Kanban = ({ projectId, projectName }) => {
                   },
                 ],
               }
-            : col,
-        ),
-      ),
+            : col
+        )
+      )
     );
   };
 
+  /* LOG MOVE ACTIVITY */
   const logMoveActivity = async (issueId, from, to) => {
     if (!user) return;
 
     await addDoc(collection(db, "tickets", issueId, "activity"), {
-      type: "MOVE",
+      type: "move", // ✅ consistent
       from,
       to,
       userId: user.uid,
@@ -154,7 +156,7 @@ const Kanban = ({ projectId, projectName }) => {
 
     dispatch(setColumns(updated));
 
-    // ✅ LOG ACTIVITY
+    // ✅ LOG ACTIVITY (ON REAL MOVE)
     if (source.title !== target.title) {
       logMoveActivity(card.id, source.title, target.title);
     }
@@ -173,9 +175,9 @@ const Kanban = ({ projectId, projectName }) => {
     dispatch(
       setColumns(
         columns.map((col) =>
-          col.id === columnId ? { ...col, title: newTitle } : col,
-        ),
-      ),
+          col.id === columnId ? { ...col, title: newTitle } : col
+        )
+      )
     );
   };
 
@@ -190,7 +192,7 @@ const Kanban = ({ projectId, projectName }) => {
 
     if (updatedItem.delete) {
       updated.forEach(
-        (col) => (col.items = col.items.filter((c) => c.id !== updatedItem.id)),
+        (col) => (col.items = col.items.filter((c) => c.id !== updatedItem.id))
       );
       dispatch(setColumns(updated));
       return;
@@ -237,7 +239,6 @@ const Kanban = ({ projectId, projectName }) => {
           projectName={projectName}
           columns={columns}
           updateIssue={updateIssue}
-          /* 🔥 REQUIRED FOR RENAME / DELETE */
           renameColumn={renameColumn}
           deleteColumn={deleteColumn}
         />
@@ -263,7 +264,7 @@ const Kanban = ({ projectId, projectName }) => {
                       title: columnTitle,
                       items: [],
                     },
-                  ]),
+                  ])
                 );
                 setColumnTitle("");
                 setShowColumnInput(false);

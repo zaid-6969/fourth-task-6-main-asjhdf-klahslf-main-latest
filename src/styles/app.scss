@@ -10,8 +10,8 @@ body {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
-*{
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+* {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
 @mixin common() {
@@ -142,15 +142,15 @@ button {
   margin-bottom: 15px;
 }
 
-.card-hr{
+.card-hr {
   height: 1px;
   width: 130%;
   background: var(--border);
   // opacity: 0.4;
-  margin-left: -27px;  
+  margin-left: -27px;
 }
 
-.footer{
+.footer {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -819,7 +819,7 @@ button.danger {
   padding: 4px;
   border-radius: 4px;
   color: #6b778c;
-
+  cursor: pointer;
   &:hover {
     background: rgba(9, 30, 66, 0.08);
     color: #172b4d;
@@ -1085,6 +1085,7 @@ button.danger {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  // border-bottom: 1px solid gray;
 }
 
 .column-menu-wrapper {
@@ -1388,7 +1389,6 @@ button.danger {
   justify-content: center;
 }
 
-
 /* =========================
    ACTIVITY SECTION
 ========================= */
@@ -1440,7 +1440,9 @@ button.danger {
   border: none;
   color: var(--muted);
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
 /* Hover (non-active) */
@@ -1518,7 +1520,6 @@ button.danger {
   cursor: default;
 }
 
-
 .issue-activity {
   display: flex;
   flex-direction: column;
@@ -1589,7 +1590,6 @@ button.danger {
   }
 }
 
-
 /* =========================
    ISSUE ACTIVITY (JIRA STYLE)
 ========================= */
@@ -1659,14 +1659,6 @@ button.danger {
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* Optional hover polish (Jira feel) */
-.activity-item:hover {
-  background: rgba(9, 30, 66, 0.03);
-  border-radius: 6px;
-  padding: 6px 6px 6px 14px;
-}
-
-
 .activity-all {
   display: flex;
   flex-direction: column;
@@ -1699,10 +1691,12 @@ button.danger {
 
 /* HEADER */
 .activity-header {
-  font-size: 13px;
+  font-size: 18px;
   color: var(--text);
   display: flex;
-  gap: 6px;
+  justify-content: left;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 6px;
 }
 
@@ -1732,7 +1726,6 @@ button.danger {
   }
 }
 
-
 /* MOVE ACTIVITY */
 .activity-move {
   display: flex;
@@ -1755,18 +1748,84 @@ button.danger {
 
 /* ARROW */
 .activity-arrow {
-  color: var(--muted);
-  font-size: 12px;
+  color: var(--primary);
+  font-size: 10px;
 }
 
 /* HEADER FIX */
 .activity-header {
   display: flex;
   gap: 6px;
-  font-size: 13px;
+  font-size: 20px;
   margin-bottom: 4px;
 }
 
 .activity-action {
   color: var(--muted);
+}
+
+.icon-checkbox {
+  display: inline-flex;
+}
+
+.checkbox-box {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 2px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkbox-icon {
+  font-size: 10px;
+  color: var(--primary);
+}
+
+.card-issue-key {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.activity-user {
+  font-size: 15px;
+  display: flex;
+  gap: 5px;
+}
+
+.workedon-left {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+}
+
+.user-hover {
+  display: flex;
+  gap: 5px;
+  position: relative;
+  top: 10px;
+  cursor: default;
+}
+.tooltip-username {
+  display: none;
+  position: absolute;
+  right: -20px;
+  background: #111;
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 500;
+}
+
+.user-tooltip {
+  position: relative;
+
+  &:hover .tooltip-username {
+    display: block;
+  }
 }

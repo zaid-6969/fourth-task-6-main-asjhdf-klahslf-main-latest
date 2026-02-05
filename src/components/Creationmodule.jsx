@@ -11,6 +11,32 @@ import { db } from "../firebase/firebase";
 import style from "../styles/btn.module.scss";
 import TextEditor from "./TextEditor";
 
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { MdKeyboardDoubleArrowUp } from "react-icons/md";
+import { storage } from "../firebase/firebase";
+import { FaEquals } from "react-icons/fa";
+import { MdKeyboardDoubleArrowDown } from "react-icons/md";
+
+export const uploadImageToFirebase = async (file) => {
+  if (!file) return null;
+
+  try {
+    // create unique path
+    const imageRef = ref(storage, `issues/${Date.now()}-${file.name}`);
+
+    // upload file
+    await uploadBytes(imageRef, file);
+
+    // get downloadable URL
+    const imageUrl = await getDownloadURL(imageRef);
+
+    return imageUrl;
+  } catch (error) {
+    console.error("Image upload failed:", error);
+    return null;
+  }
+};
+
 const Creationmodule = () => {
   const dispatch = useDispatch();
   const user = getAuth().currentUser;
@@ -29,6 +55,10 @@ const Creationmodule = () => {
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState("medium");
+
+  const [imageFile, setImageFile] = useState(null);
+
+  const [loading, setLoading] = useState(false);
 
   /* LOAD PROJECTS */
   useEffect(() => {
@@ -59,51 +89,81 @@ const Creationmodule = () => {
   /* CREATE TICKET */
   const handleCreateTicket = async () => {
     if (!title || !selectedProject || !selectedColumn) return;
+    if (loading) return;
 
-    const boardRef = doc(db, "projects", selectedProject.id, "kanban", "board");
-    const snap = await getDoc(boardRef);
-    if (!snap.exists()) return;
+    setLoading(true);
+    console.log("🚀 Submit started");
 
-    const board = snap.data();
+    try {
+      const boardRef = doc(
+        db,
+        "projects",
+        selectedProject.id,
+        "kanban",
+        "board",
+      );
 
-    const updatedColumns = board.columns.map((col) =>
-      col.id === selectedColumn.id
-        ? {
-            ...col,
-            items: [
-              ...(col.items || []),
-              {
-                id: Date.now().toString(),
-                content: title,
-                summary,
-                description,
-                priority,
-                dueDate,
-                columnId: col.id,
-                columnTitle: col.title,
-                createdBy: user?.uid || "",
-                createdByName: user?.displayName || user?.email || "",
-                createdAt: new Date().toISOString(),
-              },
-            ],
-          }
-        : col,
-    );
+      const snap = await getDoc(boardRef);
+      if (!snap.exists()) {
+        console.error("❌ Board not found");
+        setLoading(false);
+        return;
+      }
 
-    await setDoc(boardRef, { columns: updatedColumns }, { merge: true });
+      const board = snap.data();
 
-    /* ✅ RESET FORM (THIS WAS MISSING) */
-    setTitle("");
-    setSummary("");
-    setDescription("");
-    setDueDate("");
-    setPriority("medium");
-    setSelectedColumn(columns[0] || null);
+      // 🖼️ IMAGE UPLOAD
+      let imageUrl = null;
+      if (imageFile) {
+        console.log("⬆️ Uploading image...");
+        imageUrl = await uploadImageToFirebase(imageFile);
+        console.log("✅ Image uploaded:", imageUrl);
+      }
 
-    /* OPTIONAL: reset project */
-    // setSelectedProject(null);
+      const updatedColumns = board.columns.map((col) =>
+        col.id === selectedColumn.id
+          ? {
+              ...col,
+              items: [
+                ...(col.items || []),
+                {
+                  id: Date.now().toString(),
+                  content: title,
+                  summary,
+                  description,
+                  priority,
+                  dueDate,
+                  imageUrl,
+                  columnId: col.id,
+                  columnTitle: col.title,
+                  createdBy: user?.uid || "",
+                  createdByName: user?.displayName || user?.email || "",
+                  createdAt: new Date().toISOString(),
+                },
+              ],
+            }
+          : col,
+      );
 
-    dispatch(toggleModule());
+      console.log("💾 Saving to Firestore...");
+      await setDoc(boardRef, { columns: updatedColumns }, { merge: true });
+      console.log("✅ Ticket created");
+
+      // RESET
+      setTitle("");
+      setSummary("");
+      setDescription("");
+      setDueDate("");
+      setPriority("medium");
+      setImageFile(null);
+      setSelectedColumn(columns[0] || null);
+
+      dispatch(toggleModule());
+    } catch (err) {
+      console.error("🔥 CREATE TICKET FAILED:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -208,27 +268,38 @@ const Creationmodule = () => {
             />
           </div>
 
-          <div style={{ width: "20%" }} className="form-group">
-            <label>Priority</label>
+          <div className="priority-wrapper">
+            <span className={`priority-icon ${priority}`}>
+              {priority === "low" && <MdKeyboardDoubleArrowDown />}
+              {priority === "medium" && <FaEquals />}
+              {priority === "high" && <MdKeyboardDoubleArrowUp />}
+            </span>
+
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
-              <option value="high">High</option>
+              <option value="high">Highest</option>
             </select>
           </div>
         </div>
+
+        {/* <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImageFile(e.target.files[0])}
+        /> */}
 
         {/* FOOTER (FIXED) */}
         <div className="creation-footer">
           <button
             className={style["create-btn"]}
-            disabled={!title || !selectedProject || !selectedColumn}
+            disabled={loading || !title || !selectedProject || !selectedColumn}
             onClick={handleCreateTicket}
           >
-            Create Ticket
+            {loading ? "Creating..." : "Create Ticket"}
           </button>
         </div>
       </div>

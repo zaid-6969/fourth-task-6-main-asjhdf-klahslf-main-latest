@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 
 const TABS = ["All", "Comments", "History"];
 
@@ -13,8 +15,8 @@ const ActivityTabs = ({ activeTab, onTabChange, onToggle }) => {
   return (
     <div className="activity-wrapper">
       <div className="activity-header" onClick={handleToggle}>
-        <span>Activity</span>
-        <span className={`activity-arrow ${open ? "open" : ""}`}>▾</span>
+        <span>{open ? <IoIosArrowDown/>: <IoIosArrowForward/> } </span><span>Activity</span>
+        {/* <span className={`activity-arrow ${open ? "open" : ""}`}>▾</span> */}
       </div>
 
       {open && (

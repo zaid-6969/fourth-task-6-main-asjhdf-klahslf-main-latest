@@ -4,7 +4,7 @@
 .creation-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(3, 4, 7, 0.75);
+  background: rgba(3, 4, 7, 0);
   z-index: 1000;
   display: flex;
   justify-content: center;
@@ -217,4 +217,80 @@
 
 .issue-details{
   width: 80%;
+}
+
+
+.priority-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 20%;
+  height: 36px;
+  background: #1d2125;          // Jira dark surface
+  border: 1px solid #2c333a; 
+  border-radius: 5px;   
+}
+
+.priority-icon {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.priority-icon.low {
+  background: rgba(54, 179, 126, 0.18); // Jira green dark
+  color: #36b37e;
+}
+
+.priority-icon.medium {
+  background: rgba(255, 171, 0, 0.22); // Jira yellow dark
+  color: #ffab00;
+}
+
+.priority-icon.high {
+  background: rgba(255, 86, 48, 0.22); // Jira red dark
+  color: #ff5630;
+}
+
+
+.priority-wrapper select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  flex: 1;
+  height: 36px;
+  background: #1d2125;          // Jira dark surface
+  border: 1px solid #2c333a;    // Jira dark border
+  border-radius: 6px;
+  padding: 0 32px 0 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #b6c2cf;               // Jira dark text
+  cursor: pointer;
+}
+
+.priority-wrapper select:hover {
+  background: #22272b;
+  border-color: #3a444c;
+}
+
+.priority-wrapper select:focus {
+  outline: none;
+  border-color: #579dff;
+  box-shadow: 0 0 0 1px rgba(87, 157, 255, 0.6);
+}
+
+.priority-wrapper::after {
+  content: "▾";
+  position: absolute;
+  right: 10px;
+  font-size: 12px;
+  color: #8c9bab; // Jira muted text
+  pointer-events: none;
 }

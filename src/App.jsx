@@ -13,6 +13,7 @@ import SpacesList from "./pages/SpacesList";
 import Spaces from "./pages/Spaces";
 import Star from "./pages/Star";
 import Creationmodule from "./components/Creationmodule";
+// import ImageUpload from "./components/ImageUpload";
 
 const App = () => {
   const theme = useSelector((state) => state.theme.mode);
@@ -34,7 +35,7 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-
+        {/* <Route path="/image" element={<ImageUpload/>}/> */}
         <Route element={<MainLayout />}>
           <Route
             path="/admin"

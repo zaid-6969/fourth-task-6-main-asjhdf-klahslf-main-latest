@@ -60,7 +60,7 @@ const IssueAllActivity = ({ issueId }) => {
           {/* content */}
           <div className="activity-content">
             {/* header */}
-            <div className="activity-header">
+            <div className="activity-user">
               <strong>{item.userName}</strong>
 
               <span className="activity-action">

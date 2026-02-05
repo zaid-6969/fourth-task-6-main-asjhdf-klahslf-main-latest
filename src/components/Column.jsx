@@ -83,75 +83,74 @@ const Column = ({
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleColumnDrop}
     >
-      {/* ================= HEADER ================= */}
-      <div className="column-header">
-        {editingTitle ? (
-          <div className="column-title-edit">
-            <input
-              value={titleDraft}
-              onChange={(e) => setTitleDraft(e.target.value)}
-            />
-            <button className="save" onClick={handleSaveTitle}>
-              Save
-            </button>
-            <button className="cancel" onClick={handleCancelTitle}>
-              Cancel
-            </button>
-          </div>
-        ) : (
-          <div
-            className="column-title"
-            draggable
-            onDragStart={(e) =>
-              e.dataTransfer.setData(
-                "application/column",
-                JSON.stringify({ index }),
-              )
-            }
-          >
-            <span className="column-name">{column.title}</span>
-
-            <span className="column-count">{items.length}</span>
-          </div>
-        )}
-
-        {/* THREE DOTS */}
-        <div className="column-menu-wrapper" ref={menuRef}>
-          <button
-            className="column-menu-btn"
-            onClick={() => setMenuOpen((p) => !p)}
-          >
-            <FiMoreHorizontal />
-          </button>
-
-          {menuOpen && (
-            <div className="column-menu">
-              <button
-                onClick={() => {
-                  setEditingTitle(true);
-                  setMenuOpen(false);
-                }}
-              >
-                Rename
+      {/* ================= BODY (SCROLL CONTAINER) ================= */}
+      <div className="column-scroll">
+        {/* ================= HEADER (NOW STICKY) ================= */}
+        <div className="column-header">
+          {editingTitle ? (
+            <div className="column-title-edit">
+              <input
+                value={titleDraft}
+                onChange={(e) => setTitleDraft(e.target.value)}
+              />
+              <button className="save" onClick={handleSaveTitle}>
+                Save
               </button>
-
-              <button
-                className="danger"
-                onClick={() => {
-                  deleteColumn(column.id);
-                  setMenuOpen(false);
-                }}
-              >
-                Delete
+              <button className="cancel" onClick={handleCancelTitle}>
+                Cancel
               </button>
             </div>
+          ) : (
+            <div
+              className="column-title"
+              draggable
+              onDragStart={(e) =>
+                e.dataTransfer.setData(
+                  "application/column",
+                  JSON.stringify({ index }),
+                )
+              }
+            >
+              <span className="column-name">{column.title}</span>
+              <span className="column-count">{items.length}</span>
+            </div>
           )}
-        </div>
-      </div>
 
-      {/* ================= BODY ================= */}
-      <div className="column-scroll">
-        {/* CARDS */}
+          {/* THREE DOTS */}
+          <div className="column-menu-wrapper" ref={menuRef}>
+            <button
+              className="column-menu-btn"
+              onClick={() => setMenuOpen((p) => !p)}
+            >
+              <FiMoreHorizontal />
+            </button>
+
+            {menuOpen && (
+              <div className="column-menu">
+                <button
+                  onClick={() => {
+                    setEditingTitle(true);
+                    setMenuOpen(false);
+                  }}
+                >
+                  Rename
+                </button>
+
+                <button
+                  className="danger"
+                  onClick={() => {
+                    deleteColumn(column.id);
+                    setMenuOpen(false);
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* ================= CARDS ================= */}
         {items.map((item, i) => (
           <div
             key={item.id}
@@ -163,7 +162,7 @@ const Column = ({
               sourceCol={column.id}
               index={i}
               projectName={projectName}
-              columns={columns} // ✅ correct
+              columns={columns}
               updateIssue={updateIssue}
               moveCard={moveCard}
             />

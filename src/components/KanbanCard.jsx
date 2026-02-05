@@ -4,7 +4,7 @@ import { FiMoreVertical } from "react-icons/fi";
 import { SlCalender } from "react-icons/sl";
 import { FaPencilAlt } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-
+import { FaCheck } from "react-icons/fa6";
 const KanbanCard = ({
   item,
   sourceCol,
@@ -161,11 +161,23 @@ const KanbanCard = ({
 
         {/* META */}
         <div className="card-meta">
-          <span className="card-issue-key">DEV-{index + 1}</span>
+          <div className="card-issue-key">
+            <span>
+              <label className="icon-checkbox always-checked">
+                <span className="checkbox-box">
+                  <FaCheck className="checkbox-icon" />
+                </span>
+              </label>
+            </span>
+            <span style={{ fontSize: "15px" }}>DEV-{index + 1}</span>
+          </div>
 
           <span className="user-hover">
-            👤
-            <span className="user-tooltip">{item.createdByName}</span>
+            <div className={`priority-badge priority-${item.priority}`}>
+              {item.priority}
+            </div>
+           
+            <span className="user-tooltip"> <span>👤</span> <span className="tooltip-username"> {item.createdByName} </span> </span>
           </span>
         </div>
       </div>
