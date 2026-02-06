@@ -5,10 +5,12 @@
   padding: 0;
 }
 
+/* ================= CONTAINER ================= */
+
 .aside-container {
   width: 287px;
   height: 100vh;
-  background: var(--bg); 
+  background: var(--bg);
   border-right: 1px solid var(--border);
   transition: width 0.25s ease;
   overflow: hidden;
@@ -40,8 +42,9 @@
   top: 45px;
   width: 12px;
   height: 100vh;
-  background: transparent;
 }
+
+/* ================= MENU ================= */
 
 .aside-menu {
   @include reset();
@@ -55,12 +58,14 @@
   display: flex;
   flex-direction: column;
   width: 83%;
-  justify-content: center;
 }
+
+/* ================= LINK ================= */
 
 .aside-link {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   padding: 5px 10px;
   font-size: 18px;
@@ -69,7 +74,6 @@
   cursor: pointer;
   text-decoration: none;
   position: relative;
-  justify-content: space-between;
 
   &:hover {
     background: rgba(255, 255, 255, 0.05);
@@ -94,10 +98,81 @@
   }
 }
 
+/* ================= ICON SYSTEM (IMPORTANT) ================= */
+
+.icon-wrapper {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-normal,
+.icon-hover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease;
+}
+
+/* default */
+.icon-normal {
+  opacity: 1;
+}
+
+.icon-hover {
+  opacity: 0;
+}
+
+/* hover swap (normal items) */
+.aside-link:hover .icon-normal {
+  opacity: 0;
+}
+
+.aside-link:hover .icon-hover {
+  opacity: 1;
+}
+
+/* disable swap for starred & recent */
+.aside-link.no-hover-swap:hover .icon-normal {
+  opacity: 1 !important;
+}
+
+.aside-link.no-hover-swap:hover .icon-hover {
+  opacity: 0 !important;
+}
+
+/* ================= END ICONS ================= */
+
+.end-icon {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.aside-link:hover .end-icon {
+  opacity: 1;
+}
+
+/* arrow for starred & recent */
+.end-icon.arrow-only {
+  opacity: 1 !important;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #8c9bab;
+}
+
+/* ================= SPACES ================= */
+
 .space-toggle {
   justify-content: space-between;
 }
 
+/* ================= SUBMENU ================= */
 
 .aside-submenu {
   margin-left: 28px;
@@ -127,7 +202,8 @@
   color: var(--primary);
 }
 
-/* DOT */
+/* ================= PROJECT DOT ================= */
+
 .project-dot {
   width: 3px;
   height: 14px;
@@ -138,6 +214,8 @@
 .aside-project-active .project-dot {
   background: var(--primary);
 }
+
+/* ================= STARRED POPUP ================= */
 
 .starred-popup {
   position: fixed;
@@ -225,6 +303,8 @@
   }
 }
 
+/* ================= ANIMATION ================= */
+
 @keyframes dropdown {
   from {
     opacity: 0;
@@ -234,4 +314,61 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Spaces: always show + and dots */
+.end-icon.always-visible {
+  opacity: 1 !important;
+}
+
+.end-icon {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.aside-link:hover .end-icon {
+  opacity: 1;
+}
+
+
+.aside-submenu {
+  margin-left: 28px;
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+
+  /* 🔴 HIDE BY DEFAULT */
+  display: none;
+}
+
+/* ✅ SHOW ONLY WHEN OPEN */
+.aside-submenu.open {
+  display: block;
+  animation: dropdown 0.2s ease;
+}
+
+/* ================= SPACES: ALWAYS SHOW ACTIONS ================= */
+
+.space-toggle .space-actions {
+  opacity: 1 !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.starred-popup {
+  z-index: 2000;
+}
+
+
+/* FIX: For You icon must NEVER disappear */
+.aside-link.no-hover-swap .icon-normal {
+  opacity: 1 !important;
+}
+
+/* ===== FOR YOU FIX ===== */
+.aside-link.for-you p {
+  opacity: 1 !important;
+  display: block !important;
+  visibility: visible !important;
+  white-space: nowrap;
 }

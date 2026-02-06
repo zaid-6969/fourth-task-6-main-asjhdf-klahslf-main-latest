@@ -79,7 +79,7 @@ const Column = ({
 
   return (
     <div
-      className="column"
+      className={`column ${column.title === "Done" ? "done-column" : ""}`}
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleColumnDrop}
     >
@@ -171,9 +171,8 @@ const Column = ({
 
         {/* DROP TARGET */}
         <div
-          className={
-            items.length === 0 ? "empty-drop-zone" : "drop-zone-invisible"
-          }
+          className={`${items.length === 0 ? "empty-drop-zone" : "drop-zone-invisible"} 
+    ${column.title === "Done" ? "done-drop-zone" : ""}`}
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => handleCardDrop(e, items.length)}
         >

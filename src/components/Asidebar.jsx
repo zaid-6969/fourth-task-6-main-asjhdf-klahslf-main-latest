@@ -184,18 +184,22 @@ const Asidebar = () => {
             const isSpaces = item.label === "Spaces";
             const isStarred = item.label === "Starred";
             const isRecent = item.label === "Recent";
+            const isForYou = item.label === "For you";
 
             return (
               <li key={index} className="aside-item">
                 {isSpaces ? (
                   <>
                     <div
-                      className={`aside-link space-toggle ${
-                        isSpacesOpen ? "open" : ""
-                      }`}
-                      onClick={() => setIsSpacesOpen(!isSpacesOpen)}
+                      className={`aside-link space-toggle ${isSpacesOpen ? "open" : ""}`}
                     >
-                      <div className={style["aside-list-items-first"]}>
+                      <div
+                        className={style["aside-list-items-first"]}
+                        onClick={(e) => {
+                          e.stopPropagation(); // 🔴 ADD THIS LINE
+                          setIsSpacesOpen((p) => !p);
+                        }}
+                      >
                         <span className="icon-wrapper">
                           <span className="icon-normal">{item.icon}</span>
                           <span className="icon-hover">
@@ -205,7 +209,7 @@ const Asidebar = () => {
                         <p>{item.label}</p>
                       </div>
 
-                      {/* ➕ + ⋯ (hover only via CSS) */}
+                      {/* actions must NOT toggle */}
                       <span className="end-icon space-actions">
                         <FiPlus
                           className="space-plus"
@@ -214,7 +218,7 @@ const Asidebar = () => {
                             setShowCreateSpace(true);
                           }}
                         />
-                        <BsThreeDots />
+                        <BsThreeDots onClick={(e) => e.stopPropagation()} />
                       </span>
                     </div>
 
@@ -240,28 +244,13 @@ const Asidebar = () => {
                       })}
                     </ul>
                   </>
-                ) : isStarred ? (
-                  <div
-                    className="aside-link"
-                    ref={starredRef}
-                    onClick={() => setShowStarred((p) => !p)}
-                  >
-                    <div className={style["aside-list-items-first"]}>
-                      <span className="icon-wrapper">
-                        <span className="icon-normal">{item.icon}</span>
-                      </span>
-                      <p>{item.label}</p>
-                    </div>
-
-                    {showStarred && (
-                      <StarredPopup onClose={() => setShowStarred(false)} />
-                    )}
-                  </div>
-                ) : isRecent ? (
+                ) : isForYou ? (
                   <NavLink
                     to={item.path}
                     className={({ isActive }) =>
-                      isActive ? "aside-link active" : "aside-link"
+                      isActive
+                        ? "aside-link active no-hover-swap for-you"
+                        : "aside-link no-hover-swap for-you"
                     }
                   >
                     <div className={style["aside-list-items-first"]}>
@@ -270,6 +259,48 @@ const Asidebar = () => {
                       </span>
                       <p>{item.label}</p>
                     </div>
+                  </NavLink>
+                ) : isStarred ? (
+                  <div
+                    className="aside-link no-hover-swap"
+                    ref={starredRef}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowStarred((p) => !p);
+                    }}
+                  >
+                    <div className={style["aside-list-items-first"]}>
+                      <span className="icon-wrapper">
+                        <span className="icon-normal">{item.icon}</span>
+                      </span>
+                      <p>{item.label}</p>
+                    </div>
+
+                    {/* ✅ ALWAYS VISIBLE ARROW */}
+                    <span className="end-icon arrow-only">
+                      <IoChevronForward />
+                    </span>
+                  </div>
+                ) : isRecent ? (
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) =>
+                      isActive
+                        ? "aside-link active no-hover-swap"
+                        : "aside-link no-hover-swap"
+                    }
+                  >
+                    <div className={style["aside-list-items-first"]}>
+                      <span className="icon-wrapper">
+                        <span className="icon-normal">{item.icon}</span>
+                      </span>
+                      <p>{item.label}</p>
+                    </div>
+
+                    {/* ✅ ALWAYS VISIBLE ARROW */}
+                    <span className="end-icon arrow-only">
+                      <IoChevronForward />
+                    </span>
                   </NavLink>
                 ) : (
                   <NavLink
@@ -303,6 +334,12 @@ const Asidebar = () => {
         <CreateSpaceModal
           users={users}
           onClose={() => setShowCreateSpace(false)}
+        />
+      )}
+      {showStarred && (
+        <StarredPopup
+          anchorRef={starredRef}
+          onClose={() => setShowStarred(false)}
         />
       )}
     </>

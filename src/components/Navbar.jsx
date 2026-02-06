@@ -116,7 +116,6 @@ const Navbar = () => {
             {open && (
               <section className="theme-dropdown">
                 <div
-                  style={{backgroundColor:"",}}
                   className={style["drop-down-option"]}
                   onClick={handleLogout}
                 >

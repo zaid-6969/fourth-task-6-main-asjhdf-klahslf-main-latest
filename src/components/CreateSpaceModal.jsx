@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import '../styles/CreateSpaceModal.scss';
+import "../styles/CreateSpaceModal.scss";
 import { getAuth } from "firebase/auth";
 import { db } from "../firebase/firebase";
 
@@ -8,6 +8,8 @@ const CreateSpaceModal = ({ users, onClose }) => {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [selectedUsers, setSelectedUsers] = useState([]);
+
+  const [showUsers, setShowUsers] = useState(false);
 
   const auth = getAuth();
   const currentUser = auth.currentUser;
@@ -21,9 +23,7 @@ const CreateSpaceModal = ({ users, onClose }) => {
 
   const toggleUser = (uid) => {
     setSelectedUsers((prev) =>
-      prev.includes(uid)
-        ? prev.filter((id) => id !== uid)
-        : [...prev, uid]
+      prev.includes(uid) ? prev.filter((id) => id !== uid) : [...prev, uid],
     );
   };
 
@@ -61,22 +61,33 @@ const CreateSpaceModal = ({ users, onClose }) => {
         />
 
         <label>Add members</label>
-        <div className="user-list">
-          {users.map((u) => (
-            <div
-              key={u.id}
-              className={`user-item ${
-                selectedUsers.includes(u.id) ? "selected" : ""
-              }`}
-              onClick={() => toggleUser(u.id)}
-            >
-              <span className="avatar">
-                {u.name?.charAt(0).toUpperCase()}
-              </span>
-              <span>{u.name}</span>
-            </div>
-          ))}
-        </div>
+
+        <button
+          type="button"
+          className="user-list-btn"
+          onClick={() => setShowUsers((p) => !p)}
+        >
+          Add members
+        </button>
+
+        {showUsers && (
+          <div className="user-list-dropdown">
+            {users.map((u) => (
+              <div
+                key={u.id}
+                className={`user-item ${
+                  selectedUsers.includes(u.id) ? "selected" : ""
+                }`}
+                onClick={() => toggleUser(u.id)}
+              >
+                <span className="avatar">
+                  {u.name?.charAt(0).toUpperCase()}
+                </span>
+                <span>{u.name}</span>
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className="modal-actions">
           <button className="cancel" onClick={onClose}>

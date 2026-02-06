@@ -36,6 +36,8 @@ const Kanban = ({ projectId, projectName }) => {
   const [showColumnInput, setShowColumnInput] = useState(false);
   const [columnTitle, setColumnTitle] = useState("");
 
+  const [search, setSearch] = useState("");
+
   if (loading) return null;
 
   /* RESET ON PROJECT CHANGE */
@@ -116,9 +118,9 @@ const Kanban = ({ projectId, projectName }) => {
                   },
                 ],
               }
-            : col
-        )
-      )
+            : col,
+        ),
+      ),
     );
   };
 
@@ -175,9 +177,9 @@ const Kanban = ({ projectId, projectName }) => {
     dispatch(
       setColumns(
         columns.map((col) =>
-          col.id === columnId ? { ...col, title: newTitle } : col
-        )
-      )
+          col.id === columnId ? { ...col, title: newTitle } : col,
+        ),
+      ),
     );
   };
 
@@ -192,7 +194,7 @@ const Kanban = ({ projectId, projectName }) => {
 
     if (updatedItem.delete) {
       updated.forEach(
-        (col) => (col.items = col.items.filter((c) => c.id !== updatedItem.id))
+        (col) => (col.items = col.items.filter((c) => c.id !== updatedItem.id)),
       );
       dispatch(setColumns(updated));
       return;
@@ -226,60 +228,89 @@ const Kanban = ({ projectId, projectName }) => {
     dispatch(setColumns(updated));
   };
 
-  return (
-    <div className="kanban-board">
-      {columns.map((col, index) => (
-        <Column
-          key={col.id}
-          column={col}
-          index={index}
-          moveCard={moveCard}
-          moveColumn={moveColumn}
-          addCard={addCard}
-          projectName={projectName}
-          columns={columns}
-          updateIssue={updateIssue}
-          renameColumn={renameColumn}
-          deleteColumn={deleteColumn}
-        />
-      ))}
+  const filteredColumns = columns.map((col) => {
+    if (!search.trim()) return col;
 
-      {/* ADD COLUMN */}
-      <div className="add-column">
-        {showColumnInput ? (
-          <div>
-            <input
-              value={columnTitle}
-              onChange={(e) => setColumnTitle(e.target.value)}
-              autoFocus
-            />
-            <button
-              onClick={() => {
-                if (!columnTitle.trim()) return;
-                dispatch(
-                  setColumns([
-                    ...columns,
-                    {
-                      id: Date.now().toString(),
-                      title: columnTitle,
-                      items: [],
-                    },
-                  ])
-                );
-                setColumnTitle("");
-                setShowColumnInput(false);
-              }}
-            >
-              Add
+    const query = search.toLowerCase();
+
+    return {
+      ...col,
+      items: col.items.filter(
+        (item) =>
+          item.content?.toLowerCase().includes(query) ||
+          item.summary?.toLowerCase().includes(query) ||
+          item.description?.toLowerCase().includes(query) ||
+          item.createdByName?.toLowerCase().includes(query) ||
+          `dev-${col.items.indexOf(item) + 1}`.includes(query),
+      ),
+    };
+  });
+
+  return (
+    <>
+     {/* SEARCH BAR */}
+        <div className="kanban-search">
+          <input
+            type="text"
+            placeholder="Search issues…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+      <div className="kanban-board">
+        {filteredColumns.map((col, index) => (
+          <Column
+            key={col.id}
+            column={col}
+            index={index}
+            moveCard={moveCard}
+            moveColumn={moveColumn}
+            addCard={addCard}
+            projectName={projectName}
+            columns={columns}
+            updateIssue={updateIssue}
+            renameColumn={renameColumn}
+            deleteColumn={deleteColumn}
+          />
+        ))}
+
+        {/* ADD COLUMN */}
+        <div className="add-column">
+          {showColumnInput ? (
+            <div>
+              <input
+                value={columnTitle}
+                onChange={(e) => setColumnTitle(e.target.value)}
+                autoFocus
+              />
+              <button
+                onClick={() => {
+                  if (!columnTitle.trim()) return;
+                  dispatch(
+                    setColumns([
+                      ...columns,
+                      {
+                        id: Date.now().toString(),
+                        title: columnTitle,
+                        items: [],
+                      },
+                    ]),
+                  );
+                  setColumnTitle("");
+                  setShowColumnInput(false);
+                }}
+              >
+                Add
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => setShowColumnInput(true)}>
+              <FiPlus />
             </button>
-          </div>
-        ) : (
-          <button onClick={() => setShowColumnInput(true)}>
-            <FiPlus />
-          </button>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

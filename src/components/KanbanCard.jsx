@@ -52,7 +52,9 @@ const KanbanCard = ({
   return (
     <>
       <div
-        className="kanban-card"
+        className={`kanban-card ${
+          item.columnTitle === "Done" ? "done-card" : ""
+        }`}
         draggable
         onDragStart={handleDragStart}
         onClick={() => !editing && setShowModal(true)}
@@ -176,8 +178,15 @@ const KanbanCard = ({
             <div className={`priority-badge priority-${item.priority}`}>
               {item.priority}
             </div>
-           
-            <span className="user-tooltip"> <span>👤</span> <span className="tooltip-username"> {item.createdByName} </span> </span>
+
+            <span className="user-tooltip">
+              {" "}
+              <span>👤</span>{" "}
+              <span className="tooltip-username">
+                {" "}
+                {item.createdByName}{" "}
+              </span>{" "}
+            </span>
           </span>
         </div>
       </div>

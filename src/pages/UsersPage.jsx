@@ -93,10 +93,10 @@ const UsersPage = () => {
 
       {/* 🔥 HIDE DASHBOARD WHEN INSIDE SPACE */}
       {!isInSpace && (
-        <div className="landing-container">
-          <div className="landing">
+        <div style={{marginTop:'20px'}} className="landing-container">
+          <div style={{width:'90%'}} className="landing">
             <h2>For you</h2>
-            <div className="hr"></div>
+            <div style={{margin:"15px 0px"}} className="hr"></div>
 
             <div className="tabination-container">
               <div>
